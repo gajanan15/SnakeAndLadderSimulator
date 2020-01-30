@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 echo "Welcome To Snake And Ladder Simulator"
 
 #constant
@@ -25,6 +25,7 @@ function checkForOption() {
 			;;
 		$LADDER)
 			playerCurrentPosition=$(( $playerCurrentPosition + $getValue ))
+			reachExactPosition $playerCurrentPosition
 			;;
 		$SNAKE)
 			playerCurrentPosition=$(( $playerCurrentPosition - $getValue ))
@@ -37,6 +38,12 @@ function checkForOption() {
 	echo "Player Current Position: "$playerCurrentPosition
 }
 
+function reachExactPosition() {
+	if [ $1 -gt $WINNING_POSITION ]
+	then
+		playerCurrentPosition=$(( $1 - $getValue ))
+	fi
+}
 while [ $playerCurrentPosition -lt $WINNING_POSITION ]
 do
 	rollingDice

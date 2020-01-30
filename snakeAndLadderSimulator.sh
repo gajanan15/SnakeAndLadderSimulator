@@ -1,35 +1,44 @@
-#!/bin/bash -x
+#!/bin/bash
 echo "Welcome To Snake And Ladder Simulator"
 
 #constant
 NUMBER_OF_PLAYER=1
 START_POSITION=0
+WINNING_POSITION=100
 NO_PLAY=0
 LADDER=1
 SNAKE=2
 
 #variables
-currentPosition=$START_POSITION
+playerCurrentPosition=$START_POSITION
 
 function rollingDice() {
 	getValue=$((RANDOM%6 + 1))
 	echo "After Rolling Dice Number is : "$getValue
-	snakeLadderOrNoPlay
 }
 
-function snakeLadderOrNoPlay() {
+function checkForOption() {
 	position=$((RANDOM%3))
 	case $position in
 		$NO_PLAY)
-			currentPosition=$currentPosition
+			playerCurrentPosition=$playerCurrentPosition
 			;;
 		$LADDER)
-			currentPosition=$(($currentPosition + $getValue))
+			playerCurrentPosition=$(( $playerCurrentPosition + $getValue ))
 			;;
 		$SNAKE)
-			currentPosition=$(($currentPosition - $getValue))
+			playerCurrentPosition=$(( $playerCurrentPosition - $getValue ))
+			if [ $playerCurrentPosition -lt $START_POSITION ]
+			then
+				playerCurrentPosition=$START_POSITION
+			fi
 			;;
 	esac
-	echo "Current Position: "$currentPosition
+	echo "Player Current Position: "$playerCurrentPosition
 }
-rollingDice
+
+while [ $playerCurrentPosition -lt $WINNING_POSITION ]
+do
+	rollingDice
+	checkForOption
+done

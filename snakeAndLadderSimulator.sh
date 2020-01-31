@@ -11,10 +11,12 @@ SNAKE=2
 
 #variables
 playerCurrentPosition=$START_POSITION
+numberOfTimeDiceTossed=0
 
 function rollingDice() {
 	getValue=$((RANDOM%6 + 1))
 	echo "After Rolling Dice Number is : "$getValue
+	((numberOfTimesDiceTossed++))
 }
 
 function checkForOption() {
@@ -49,3 +51,4 @@ do
 	rollingDice
 	checkForOption
 done
+echo "Number Of Time Dice Tossed: "$numberOfTimesDiceTossed

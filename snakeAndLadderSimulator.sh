@@ -12,7 +12,6 @@ SNAKE=2
 
 #variables
 playerCurrentPosition=$START_POSITION
-playerTurn=$PLAYER_ONE
 playerOnePosition=0
 playerTwoPosition=0
 diceCount=0
@@ -21,21 +20,20 @@ flag=0
 function rollingDice() {
 	rollValue=$((RANDOM%6+1))
 	((diceCount++))
-}
+} 
 
 function checkForOption() {
 	position=$((RANDOM%3))
 	playerCurrentPosition=$1
-	diceCount=$2
 	case $position in
 		$NO_PLAY)
 			playerCurrentPosition=$playerCurrentPosition
 			;;
 		$LADDER)
-			playerCurrentPosition=$(( $playerCurrentPosition + $diceCount ))
+			playerCurrentPosition=$(( $playerCurrentPosition + $2 ))
 			;;
 		$SNAKE)
-			playerCurrentPosition=$(( $playerCurrentPosition - $diceCount ))
+			playerCurrentPosition=$(( $playerCurrentPosition - $2 ))
 			;;
 	esac
 	echo $playerCurrentPosition
@@ -43,19 +41,18 @@ function checkForOption() {
 
 function reachExactPosition() {
 	playerPosition=$1
-	dice=$2
 	if [ $playerPosition -lt 0 ]
 	then
 		playerPosition=$START_POSITION
 	fi
 	if [ $playerPosition -gt $WINNING_POSITION ]
 	then
-		playerPosition=$(( $playerPosition - $dice ))
+		playerPosition=$(( $playerPosition - $2 ))
 	fi
 	echo $playerPosition
 }
 
-function switchPlayer() {
+function switchTurnsOfPlayers() {
 	while [[ $playerOnePosition -ne $WINNING_POSITION && $playerTwoPosition -ne $WINNING_POSITION ]]
 	do
 		if [ $flag -eq 0 ]
@@ -71,13 +68,16 @@ function switchPlayer() {
 			flag=0
 		fi
 	done
-	if [ $playerOnePosition -eq $WINNING_POSITION ]
-	then
-		echo "Player one win"
-		echo "Number Of Time Dice Tossed Player one: " $(($diceCount + 1))
-	else
-		echo "Player Two win"
-		echo "Number Of Time Dice Tossed Player Two: " $diceCount
-	fi
+	checkWinner
 }
-switchPlayer
+function checkWinner() {
+	if [ $playerOnePosition -eq $WINNING_POSITION ]
+   then
+      echo "Player one win"
+      echo "Number Of Time Dice Tossed Player one: " $(($diceCount + 1))
+   else
+      echo "Player Two win"
+      echo "Number Of Time Dice Tossed Player Two: " $diceCount
+   fi
+}
+switchTurnsOfPlayers

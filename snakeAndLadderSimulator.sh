@@ -56,7 +56,7 @@ function reachExactPosition() {
 }
 
 function switchPlayer() {
-	while [[ $playerOnetPosition -ne $WINNING_POSITION && $playerTwoPosition -ne $WINNING_POSITION ]]
+	while [[ $playerOnePosition -ne $WINNING_POSITION && $playerTwoPosition -ne $WINNING_POSITION ]]
 	do
 		if [ $flag -eq 0 ]
 		then
